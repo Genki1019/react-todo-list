@@ -49,6 +49,12 @@ function App() {
     });
   };
 
+  const handleDelete = (id: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((prevTodo) => prevTodo.id !== id);
+    });
+  };
+
   return (
     <>
       <div className="container">
@@ -62,6 +68,7 @@ function App() {
           todos={todos}
           handleCheck={handleCheck}
           handleEdit={handleEdit}
+          handleDelete={handleDelete}
         />
       </div>
     </>
