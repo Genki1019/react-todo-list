@@ -20,14 +20,16 @@ function TodoList({
   return (
     <ul className="todoList">
       {todos.map((todo) => (
-        <li key={todo.id}>
+        <li key={todo.id} className="todoContent">
           <input
             type="checkbox"
+            className="checkbox"
             checked={todo.isCompleted}
             onChange={() => handleCheck(todo.id)}
           />
           <input
             type="text"
+            className="todoTitle"
             value={todo.title}
             onChange={(e) => handleEdit(todo.id, e.target.value)}
             disabled={todo.isCompleted}
