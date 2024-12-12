@@ -24,7 +24,7 @@ function TodoList({
           <input
             type="checkbox"
             checked={todo.isCompleted}
-            onClick={() => handleCheck(todo.id)}
+            onChange={() => handleCheck(todo.id)}
           />
           <input
             type="text"
