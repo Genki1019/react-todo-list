@@ -41,6 +41,14 @@ function App() {
     });
   };
 
+  const handleEdit = (id: string, newTitle: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((prevTodo) =>
+        prevTodo.id === id ? { ...prevTodo, title: newTitle } : prevTodo
+      );
+    });
+  };
+
   return (
     <>
       <div className="container">
@@ -50,7 +58,11 @@ function App() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
-        <TodoList todos={todos} handleCheck={handleCheck} />
+        <TodoList
+          todos={todos}
+          handleCheck={handleCheck}
+          handleEdit={handleEdit}
+        />
       </div>
     </>
   );

@@ -7,9 +7,10 @@ type Todo = {
 type TodoListProps = {
   todos: Todo[];
   handleCheck: (id: string) => void;
+  handleEdit: (id: string, newTitle: string) => void;
 };
 
-function TodoList({ todos, handleCheck }: TodoListProps) {
+function TodoList({ todos, handleCheck, handleEdit }: TodoListProps) {
   return (
     <ul className="todoList">
       {todos.map((todo) => (
@@ -19,7 +20,12 @@ function TodoList({ todos, handleCheck }: TodoListProps) {
             checked={todo.isCompleted}
             onClick={() => handleCheck(todo.id)}
           />
-          <input type="text" value={todo.title} disabled={todo.isCompleted} />
+          <input
+            type="text"
+            value={todo.title}
+            onChange={(e) => handleEdit(todo.id, e.target.value)}
+            disabled={todo.isCompleted}
+          />
           <button type="button" className="deleteButton">
             <img src="./public/delete-btn.svg" alt="削除" />
           </button>
