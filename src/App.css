@@ -18,6 +18,7 @@ h1 {
   margin-bottom: 30px;
 }
 
+/* 登録フォーム */
 .registerForm {
   margin-bottom: 30px;
 }
@@ -69,4 +70,21 @@ h1 {
     border: 1px solid #505a5f;
     border-radius: 5px;
   }
+}
+
+.deleteButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.deleteButton img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.deleteButton:hover img {
+  transform: scale(1.2);
 }

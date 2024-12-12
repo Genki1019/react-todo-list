@@ -2,11 +2,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import { v4 as uuid } from "uuid";
+import TodoList from "./TodoList";
 
 function App() {
   type Todo = {
     id: string;
     title: string;
+    isCompleted: boolean;
   };
 
   const [text, setText] = useState("");
@@ -23,9 +25,20 @@ function App() {
     const newTodo: Todo = {
       id: uuid(),
       title: text,
+      isCompleted: false,
     };
     setTodos([newTodo, ...todos]);
     setText("");
+  };
+
+  const handleCheck = (id: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((prevTodo) =>
+        prevTodo.id === id
+          ? { ...prevTodo, isCompleted: !prevTodo.isCompleted }
+          : prevTodo
+      );
+    });
   };
 
   return (
@@ -37,11 +50,7 @@ function App() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
-        <ul className="todoList">
-          {todos.map((todo) => (
-            <li key={todo.id}>{todo.title}</li>
-          ))}
-        </ul>
+        <TodoList todos={todos} handleCheck={handleCheck} />
       </div>
     </>
   );
