@@ -55,6 +55,12 @@ function App() {
     });
   };
 
+  const handleBulkDelete = () => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((prevTodo) => prevTodo.isCompleted === false);
+    });
+  };
+
   return (
     <>
       <div className="container">
@@ -70,6 +76,7 @@ function App() {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
         />
+        <button className="bulkDeleteButton" onClick={handleBulkDelete}>完了済みのタスクを一括削除</button>
       </div>
     </>
   );

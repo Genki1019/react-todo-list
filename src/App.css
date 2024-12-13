@@ -151,3 +151,18 @@ h1 {
     width: 200px;
   }
 }
+
+.bulkDeleteButton {
+  padding: 0.4rem 1.5rem;
+  height: 40px;
+  color: #fff;
+  background-color: #dc4e4e;
+  border: 1px solid #505a5f;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.bulkDeleteButton:hover {
+  background-color: #bc3e3e;
+}
