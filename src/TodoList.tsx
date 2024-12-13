@@ -39,7 +39,7 @@ function TodoList({
             className="deleteButton"
             onClick={() => handleDelete(todo.id)}
           >
-            <img src="./public/delete-btn.svg" alt="削除" />
+            <img src="/delete-btn.svg" alt="削除" />
           </button>
         </li>
       ))}

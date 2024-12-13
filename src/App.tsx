@@ -1,18 +1,40 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
-import { v4 as uuid } from "uuid";
 import TodoList from "./TodoList";
+import { v4 as uuid } from "uuid";
+
+type Todo = {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+};
+
+const STORAGE_KEY = "todos";
 
 function App() {
-  type Todo = {
-    id: string;
-    title: string;
-    isCompleted: boolean;
-  };
-
   const [text, setText] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+
+      const storedTodos = localStorage.getItem(STORAGE_KEY);
+      if (storedTodos) {
+        try {
+          setTodos(JSON.parse(storedTodos));
+        } catch (error) {
+          console.error("ローカルストレージのデータが不正です。", error);
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  }, [todos]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
