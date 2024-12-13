@@ -17,23 +17,31 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const isFirstRun = useRef(true);
 
+  const loadTodosFromLocalStorage = () => {
+    const storedTodos = localStorage.getItem(STORAGE_KEY);
+    if (storedTodos) {
+      try {
+        return JSON.parse(storedTodos) as Todo[];
+      } catch (error) {
+        console.error("ローカルストレージのデータが不正です。", error);
+      }
+    }
+    return [];
+  };
+
+  const saveTodosToLocalStorage = (todos: Todo[]) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  };
+
   useEffect(() => {
     if (isFirstRun.current) {
       isFirstRun.current = false;
-
-      const storedTodos = localStorage.getItem(STORAGE_KEY);
-      if (storedTodos) {
-        try {
-          setTodos(JSON.parse(storedTodos));
-        } catch (error) {
-          console.error("ローカルストレージのデータが不正です。", error);
-        }
-      }
+      setTodos(loadTodosFromLocalStorage());
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    saveTodosToLocalStorage(todos);
   }, [todos]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +50,7 @@ function App() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text) return;
+    if (!text.trim()) return;
 
     const newTodo: Todo = {
       id: uuid(),
@@ -66,7 +74,7 @@ function App() {
   const handleEdit = (id: string, newTitle: string) => {
     setTodos((prevTodos) => {
       return prevTodos.map((prevTodo) =>
-        prevTodo.id === id ? { ...prevTodo, title: newTitle } : prevTodo
+        prevTodo.id === id ? { ...prevTodo, title: newTitle.trim() } : prevTodo
       );
     });
   };
