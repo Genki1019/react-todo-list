@@ -17,19 +17,17 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const isFirstRun = useRef(true);
 
-  const loadTodosFromLocalStorage = () => {
-    const storedTodos = localStorage.getItem(STORAGE_KEY);
-    if (storedTodos) {
-      try {
-        return JSON.parse(storedTodos) as Todo[];
-      } catch (error) {
-        console.error("ローカルストレージのデータが不正です。", error);
-      }
+  const loadTodosFromLocalStorage = (): Todo[] => {
+    try {
+      const storedTodos = localStorage.getItem(STORAGE_KEY);
+      return storedTodos ? JSON.parse(storedTodos) : [];
+    } catch (error) {
+      console.error("Failed to parse local storage data:", error);
+      return [];
     }
-    return [];
   };
 
-  const saveTodosToLocalStorage = (todos: Todo[]) => {
+  const saveTodosToLocalStorage = (todos: Todo[]): void => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   };
 
@@ -54,7 +52,7 @@ function App() {
 
     const newTodo: Todo = {
       id: uuid(),
-      title: text,
+      title: text.trim(),
       isCompleted: false,
     };
     setTodos([newTodo, ...todos]);
