@@ -83,6 +83,15 @@ function App() {
     });
   };
 
+  const handleBulkDelete = () => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((prevTodo) => prevTodo.isCompleted === false);
+    });
+  };
+
+  const hasCompletedTodos =
+    todos.filter((todo) => todo.isCompleted).length >= 2;
+
   return (
     <>
       <div className="container">
@@ -98,6 +107,11 @@ function App() {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
         />
+        {hasCompletedTodos && (
+          <button className="bulkDeleteButton" onClick={handleBulkDelete}>
+            完了済みのタスクを一括削除
+          </button>
+        )}
       </div>
     </>
   );
