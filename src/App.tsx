@@ -1,9 +1,10 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import TodoList from "./TodoList";
 import { v4 as uuid } from "uuid";
+import useTodos from "./hooks/useTodos";
 
 type Todo = {
   id: string;
@@ -11,8 +12,6 @@ type Todo = {
   isCompleted: boolean;
   deadline: string;
 };
-
-const STORAGE_KEY = "todos";
 
 const formatDate = (date: Date): string => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -22,34 +21,8 @@ const formatDate = (date: Date): string => {
 
 function App() {
   const [title, setTitle] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useTodos();
   const [deadline, setDeadline] = useState<Date | null>(null);
-  const isFirstRun = useRef(true);
-
-  const loadTodosFromLocalStorage = (): Todo[] => {
-    try {
-      const storedTodos = localStorage.getItem(STORAGE_KEY);
-      return storedTodos ? JSON.parse(storedTodos) : [];
-    } catch (error) {
-      console.error("Failed to parse local storage data:", error);
-      return [];
-    }
-  };
-
-  const saveTodosToLocalStorage = (todos: Todo[]): void => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  };
-
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      setTodos(loadTodosFromLocalStorage());
-    }
-  }, []);
-
-  useEffect(() => {
-    saveTodosToLocalStorage(todos);
-  }, [todos]);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
