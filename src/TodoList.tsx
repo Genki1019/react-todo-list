@@ -2,6 +2,7 @@ type Todo = {
   id: string;
   title: string;
   isCompleted: boolean;
+  deadline: string;
 };
 
 type TodoListProps = {

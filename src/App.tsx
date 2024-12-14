@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import TodoList from "./TodoList";
@@ -8,13 +9,15 @@ type Todo = {
   id: string;
   title: string;
   isCompleted: boolean;
+  deadline: string;
 };
 
 const STORAGE_KEY = "todos";
 
 function App() {
-  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [deadline, setDeadline] = useState<Date | null>(null);
   const isFirstRun = useRef(true);
 
   const loadTodosFromLocalStorage = (): Todo[] => {
@@ -42,21 +45,27 @@ function App() {
     saveTodosToLocalStorage(todos);
   }, [todos]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleDeadlineChange = (date: Date | null) => {
+    setDeadline(date);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text.trim()) return;
+    if (!title.trim()) return;
 
     const newTodo: Todo = {
       id: uuid(),
-      title: text.trim(),
+      title: title.trim(),
       isCompleted: false,
+      deadline: deadline ? deadline.toISOString().split("T")[0] : "",
     };
     setTodos([newTodo, ...todos]);
-    setText("");
+    setTitle("");
+    setDeadline(null);
   };
 
   const handleCheck = (id: string) => {
@@ -97,8 +106,10 @@ function App() {
       <div className="container">
         <h1>Todoリスト</h1>
         <RegisterForm
-          text={text}
-          handleChange={handleChange}
+          title={title}
+          deadline={deadline}
+          handleTitleChange={handleTitleChange}
+          handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
         <TodoList
