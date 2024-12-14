@@ -57,11 +57,20 @@ function App() {
     e.preventDefault();
     if (!title.trim()) return;
 
+    if (!deadline) return;
+    const localDate = new Date(
+      deadline.getFullYear(),
+      deadline.getMonth(),
+      deadline.getDate()
+    )
+      .toISOString()
+      .split("T")[0];
+
     const newTodo: Todo = {
       id: uuid(),
       title: title.trim(),
       isCompleted: false,
-      deadline: deadline ? deadline.toISOString().split("T")[0] : "",
+      deadline: localDate,
     };
     setTodos([newTodo, ...todos]);
     setTitle("");
@@ -78,10 +87,18 @@ function App() {
     });
   };
 
-  const handleEdit = (id: string, newTitle: string) => {
+  const handleTitleEdit = (id: string, newTitle: string) => {
     setTodos((prevTodos) => {
       return prevTodos.map((prevTodo) =>
         prevTodo.id === id ? { ...prevTodo, title: newTitle.trim() } : prevTodo
+      );
+    });
+  };
+
+  const handleDeadlineEdit = (id: string, newDeadline: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((prevTodo) =>
+        prevTodo.id === id ? { ...prevTodo, deadline: newDeadline } : prevTodo
       );
     });
   };
@@ -115,7 +132,8 @@ function App() {
         <TodoList
           todos={todos}
           handleCheck={handleCheck}
-          handleEdit={handleEdit}
+          handleTitleEdit={handleTitleEdit}
+          handleDeadlineEdit={handleDeadlineEdit}
           handleDelete={handleDelete}
         />
         {hasCompletedTodos && (
