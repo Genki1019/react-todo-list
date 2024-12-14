@@ -14,6 +14,12 @@ type Todo = {
 
 const STORAGE_KEY = "todos";
 
+const formatDate = (date: Date): string => {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0];
+};
+
 function App() {
   const [title, setTitle] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -55,22 +61,15 @@ function App() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim() || !deadline) return;
 
-    if (!deadline) return;
-    const localDate = new Date(
-      deadline.getFullYear(),
-      deadline.getMonth(),
-      deadline.getDate()
-    )
-      .toISOString()
-      .split("T")[0];
+    const formattedDeadline = formatDate(deadline);
 
     const newTodo: Todo = {
       id: uuid(),
       title: title.trim(),
       isCompleted: false,
-      deadline: localDate,
+      deadline: formattedDeadline,
     };
     setTodos([newTodo, ...todos]);
     setTitle("");
