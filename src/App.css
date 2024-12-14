@@ -30,6 +30,7 @@ h1 {
 }
 
 .registerTextbox {
+  color: #505a5f;
   display: block;
   margin: 0 auto 15px;
   width: 50%;
@@ -124,6 +125,7 @@ h1 {
 }
 
 .todoTitle {
+  color: #505a5f;
   width: 400px;
   height: 40px;
   padding: 0.5rem;
