@@ -1,65 +1,49 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import TodoList from "./TodoList";
+import useTodos from "./hooks/useTodos";
+import { Todo } from "./types";
 import { v4 as uuid } from "uuid";
 
-type Todo = {
-  id: string;
-  title: string;
-  isCompleted: boolean;
+const formatDate = (date: Date): string => {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0];
 };
 
-const STORAGE_KEY = "todos";
-
 function App() {
-  const [text, setText] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const isFirstRun = useRef(true);
+  const [title, setTitle] = useState("");
+  const [todos, setTodos] = useTodos();
+  const [deadline, setDeadline] = useState<Date | null>(null);
 
-  const loadTodosFromLocalStorage = (): Todo[] => {
-    try {
-      const storedTodos = localStorage.getItem(STORAGE_KEY);
-      return storedTodos ? JSON.parse(storedTodos) : [];
-    } catch (error) {
-      console.error("Failed to parse local storage data:", error);
-      return [];
-    }
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
   };
 
-  const saveTodosToLocalStorage = (todos: Todo[]): void => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  };
-
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      setTodos(loadTodosFromLocalStorage());
-    }
-  }, []);
-
-  useEffect(() => {
-    saveTodosToLocalStorage(todos);
-  }, [todos]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
+  const handleDeadlineChange = (date: Date | null) => {
+    setDeadline(date);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text.trim()) return;
+    if (!title.trim() || !deadline) return;
+
+    const formattedDeadline = formatDate(deadline);
 
     const newTodo: Todo = {
       id: uuid(),
-      title: text.trim(),
+      title: title.trim(),
       isCompleted: false,
+      deadline: formattedDeadline,
     };
     setTodos([newTodo, ...todos]);
-    setText("");
+    setTitle("");
+    setDeadline(null);
   };
 
-  const handleCheck = (id: string) => {
+  const toggleCompletion = (id: string) => {
     setTodos((prevTodos) => {
       return prevTodos.map((prevTodo) =>
         prevTodo.id === id
@@ -69,10 +53,18 @@ function App() {
     });
   };
 
-  const handleEdit = (id: string, newTitle: string) => {
+  const handleTitleEdit = (id: string, newTitle: string) => {
     setTodos((prevTodos) => {
       return prevTodos.map((prevTodo) =>
         prevTodo.id === id ? { ...prevTodo, title: newTitle.trim() } : prevTodo
+      );
+    });
+  };
+
+  const handleDeadlineEdit = (id: string, newDeadline: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((prevTodo) =>
+        prevTodo.id === id ? { ...prevTodo, deadline: newDeadline } : prevTodo
       );
     });
   };
@@ -97,14 +89,17 @@ function App() {
       <div className="container">
         <h1>Todoリスト</h1>
         <RegisterForm
-          text={text}
-          handleChange={handleChange}
+          title={title}
+          deadline={deadline}
+          handleTitleChange={handleTitleChange}
+          handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
         <TodoList
           todos={todos}
-          handleCheck={handleCheck}
-          handleEdit={handleEdit}
+          toggleCompletion={toggleCompletion}
+          handleTitleEdit={handleTitleEdit}
+          handleDeadlineEdit={handleDeadlineEdit}
           handleDelete={handleDelete}
         />
         {hasCompletedTodos && (
