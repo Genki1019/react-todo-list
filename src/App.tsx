@@ -76,7 +76,7 @@ function App() {
     setDeadline(null);
   };
 
-  const handleCheck = (id: string) => {
+  const toggleCompletion = (id: string) => {
     setTodos((prevTodos) => {
       return prevTodos.map((prevTodo) =>
         prevTodo.id === id
@@ -130,7 +130,7 @@ function App() {
         />
         <TodoList
           todos={todos}
-          handleCheck={handleCheck}
+          toggleCompletion={toggleCompletion}
           handleTitleEdit={handleTitleEdit}
           handleDeadlineEdit={handleDeadlineEdit}
           handleDelete={handleDelete}

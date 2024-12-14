@@ -9,7 +9,7 @@ type Todo = {
 
 type TodoCardProps = {
   todo: Todo;
-  handleCheck: (id: string) => void;
+  toggleCompletion: (id: string) => void;
   handleTitleEdit: (id: string, newTitle: string) => void;
   handleDeadlineEdit: (id: string, newDeadline: string) => void;
   handleDelete: (id: string) => void;
@@ -22,7 +22,7 @@ const WARNING_BACKGROUND_COLOR = "#fcfae1";
 
 function TodoCard({
   todo,
-  handleCheck,
+  toggleCompletion,
   handleTitleEdit,
   handleDeadlineEdit,
   handleDelete,
@@ -59,7 +59,7 @@ function TodoCard({
           type="checkbox"
           className="checkbox"
           checked={todo.isCompleted}
-          onChange={() => handleCheck(todo.id)}
+          onChange={() => toggleCompletion(todo.id)}
         />
         <input
           type="text"

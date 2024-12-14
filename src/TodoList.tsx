@@ -9,7 +9,7 @@ type Todo = {
 
 type TodoListProps = {
   todos: Todo[];
-  handleCheck: (id: string) => void;
+  toggleCompletion: (id: string) => void;
   handleTitleEdit: (id: string, newTitle: string) => void;
   handleDeadlineEdit: (id: string, newDeadline: string) => void;
   handleDelete: (id: string) => void;
@@ -17,7 +17,7 @@ type TodoListProps = {
 
 function TodoList({
   todos,
-  handleCheck,
+  toggleCompletion,
   handleTitleEdit,
   handleDeadlineEdit,
   handleDelete,
@@ -28,7 +28,7 @@ function TodoList({
         <TodoCard
           key={todo.id}
           todo={todo}
-          handleCheck={handleCheck}
+          toggleCompletion={toggleCompletion}
           handleTitleEdit={handleTitleEdit}
           handleDeadlineEdit={handleDeadlineEdit}
           handleDelete={handleDelete}
