@@ -1,11 +1,5 @@
 import DatePicker from "react-datepicker";
-
-type Todo = {
-  id: string;
-  title: string;
-  isCompleted: boolean;
-  deadline: string;
-};
+import { Todo } from "./types";
 
 type TodoCardProps = {
   todo: Todo;

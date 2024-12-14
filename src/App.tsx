@@ -3,15 +3,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import TodoList from "./TodoList";
-import { v4 as uuid } from "uuid";
 import useTodos from "./hooks/useTodos";
-
-type Todo = {
-  id: string;
-  title: string;
-  isCompleted: boolean;
-  deadline: string;
-};
+import { Todo } from "./types";
+import { v4 as uuid } from "uuid";
 
 const formatDate = (date: Date): string => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
