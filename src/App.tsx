@@ -3,8 +3,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import TodoList from "./TodoList";
+import SortControls from "./SortControls";
 import useTodos from "./hooks/useTodos";
-import { Todo } from "./types";
+import useSortTodos from "./hooks/useSortTodos";
+import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
 
 const formatDate = (date: Date): string => {
@@ -17,6 +19,8 @@ function App() {
   const [title, setTitle] = useState("");
   const [todos, setTodos] = useTodos();
   const [deadline, setDeadline] = useState<Date | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.CREATED_ASC);
+  const sortedTodos = useSortTodos(todos, sortOrder);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -95,8 +99,12 @@ function App() {
           handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
+        <SortControls
+          sortOrder={sortOrder}
+          handleSortOrderChange={setSortOrder}
+        />
         <TodoList
-          todos={todos}
+          todos={sortedTodos}
           toggleCompletion={toggleCompletion}
           handleTitleEdit={handleTitleEdit}
           handleDeadlineEdit={handleDeadlineEdit}

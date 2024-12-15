@@ -84,6 +84,31 @@ h1 {
   }
 }
 
+/* ソート順プルダウン */
+.sortControls {
+  color: #505a5f;
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.SortPullDownMenu {
+  color: #505a5f;
+  padding: 5px 10px;
+  border: 1px solid #a0aaaf;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .sortControls {
+    width: 80%;
+  }
+}
+
+
 /* Todo一覧 */
 .todoCard {
   display: flex;
