@@ -105,6 +105,22 @@ function App() {
     }
   };
 
+  const handleCategoryDelete = (categoryToDelete: string) => {
+    setCategories((prevCategories) =>
+      prevCategories.filter((category) => category !== categoryToDelete)
+    );
+    if (activeCategory === categoryToDelete && categories.length > 1) {
+      setActiveCategory(categories[0]);
+    }
+  };
+
+  const handleCategoryReorder = (sourceIndex: number, targetIndex: number) => {
+    const updatedCategories = [...categories];
+    const [movedCategory] = updatedCategories.splice(sourceIndex, 1);
+    updatedCategories.splice(targetIndex, 0, movedCategory);
+    setCategories(updatedCategories);
+  };
+
   return (
     <>
       <div className="container">
@@ -123,6 +139,8 @@ function App() {
           activeCategory={activeCategory}
           handleCategoryChange={handleCategoryChange}
           handleCategoryAdd={handleCategoryAdd}
+          handleCategoryDelete={handleCategoryDelete}
+          handleCategoryReorder={handleCategoryReorder}
         />
 
         <SortControls
