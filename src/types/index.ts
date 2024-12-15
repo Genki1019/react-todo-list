@@ -3,6 +3,7 @@ export type Todo = {
   title: string;
   isCompleted: boolean;
   deadline: string;
+  category: string;
 };
 
 export enum SortOrder {

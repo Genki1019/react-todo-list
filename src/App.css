@@ -84,6 +84,67 @@ h1 {
   }
 }
 
+/* カテゴリタブ */
+.categoryTabsContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  width: 50%;
+  overflow-x: auto;
+  padding-bottom: 0px;
+}
+
+.categoryTabs {
+  display: inline-flex;
+  justify-content: flex-start;
+  margin: 0;
+  width: 100%;
+}
+
+.categoryTabs button {
+  color: #505a5f;
+  font-size: large;
+  padding: 10px;
+  margin: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.categoryTabs .active {
+  color: #007bff;
+}
+
+.categoryTabs button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 4px;
+  background-color: #007bff;
+  border-radius: 10px;
+  transition: all 0.4s ease-in-out;
+}
+
+.categoryTabs button.active::after {
+  width: 100%;
+}
+
+.addCategoryButton {
+  padding: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #28a745;
+}
+
+@media screen and (max-width: 768px) {
+  .categoryTabsContainer {
+    width: 80%;
+  }
+}
+
 /* ソート順プルダウン */
 .sortControls {
   color: #505a5f;
@@ -107,7 +168,6 @@ h1 {
     width: 80%;
   }
 }
-
 
 /* Todo一覧 */
 .todoCard {

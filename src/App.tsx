@@ -21,6 +21,8 @@ function App() {
   const [deadline, setDeadline] = useState<Date | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.CREATED_ASC);
   const sortedTodos = useSortTodos(todos, sortOrder);
+  const [categories, setCategories] = useState<string[]>(["Study", "Work"]);
+  const [selectedCategory, setSelectedCategory] = useState("Work");
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -41,6 +43,7 @@ function App() {
       title: title.trim(),
       isCompleted: false,
       deadline: formattedDeadline,
+      category: selectedCategory,
     };
     setTodos([newTodo, ...todos]);
     setTitle("");
@@ -88,6 +91,18 @@ function App() {
   const hasCompletedTodos =
     todos.filter((todo) => todo.isCompleted).length >= 2;
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const handleCategoryAdd = () => {
+    const newCategory = prompt("新しいカテゴリ名を入力してください");
+    if (newCategory && !categories.includes(newCategory)) {
+      setCategories([...categories, newCategory]);
+      setSelectedCategory(newCategory);
+    }
+  };
+
   return (
     <>
       <div className="container">
@@ -99,6 +114,23 @@ function App() {
           handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
+        <div className="categoryTabsContainer">
+          <div className="categoryTabs">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => handleCategoryChange(category)}
+                className={selectedCategory === category ? "active" : ""}
+              >
+                {category}
+              </button>
+            ))}
+            <button onClick={handleCategoryAdd} className="addCategoryButton">
+              +
+            </button>
+          </div>
+        </div>
+
         <SortControls
           sortOrder={sortOrder}
           handleSortOrderChange={setSortOrder}
