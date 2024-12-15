@@ -9,6 +9,7 @@ import useSortTodos from "./hooks/useSortTodos";
 import useCategories from "./hooks/useCategories";
 import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
+import CategoryTabs from "./CategoryTabs";
 
 const formatDate = (date: Date): string => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -23,7 +24,7 @@ function App() {
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.CREATED_ASC);
   const sortedTodos = useSortTodos(todos, sortOrder);
   const [categories, setCategories] = useCategories();
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -44,7 +45,7 @@ function App() {
       title: title.trim(),
       isCompleted: false,
       deadline: formattedDeadline,
-      category: selectedCategory,
+      category: activeCategory,
     };
     setTodos([newTodo, ...todos]);
     setTitle("");
@@ -93,14 +94,14 @@ function App() {
     todos.filter((todo) => todo.isCompleted).length >= 2;
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+    setActiveCategory(category);
   };
 
   const handleCategoryAdd = () => {
     const newCategory = prompt("新しいカテゴリ名を入力してください");
     if (newCategory && !categories.includes(newCategory)) {
       setCategories([...categories, newCategory]);
-      setSelectedCategory(newCategory);
+      setActiveCategory(newCategory);
     }
   };
 
@@ -108,6 +109,7 @@ function App() {
     <>
       <div className="container">
         <h1>Todoリスト</h1>
+
         <RegisterForm
           title={title}
           deadline={deadline}
@@ -115,27 +117,19 @@ function App() {
           handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
-        <div className="categoryTabsContainer">
-          <div className="categoryTabs">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={selectedCategory === category ? "active" : ""}
-              >
-                {category}
-              </button>
-            ))}
-            <button onClick={handleCategoryAdd} className="addCategoryButton">
-              +
-            </button>
-          </div>
-        </div>
+
+        <CategoryTabs
+          categories={categories}
+          activeCategory={activeCategory}
+          handleCategoryChange={handleCategoryChange}
+          handleCategoryAdd={handleCategoryAdd}
+        />
 
         <SortControls
           sortOrder={sortOrder}
           handleSortOrderChange={setSortOrder}
         />
+
         <TodoList
           todos={sortedTodos}
           toggleCompletion={toggleCompletion}
@@ -143,6 +137,7 @@ function App() {
           handleDeadlineEdit={handleDeadlineEdit}
           handleDelete={handleDelete}
         />
+
         {hasCompletedTodos && (
           <button className="bulkDeleteButton" onClick={handleBulkDelete}>
             完了済みのタスクを一括削除

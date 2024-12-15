@@ -91,32 +91,31 @@ h1 {
   margin: 20px auto;
   width: 50%;
   overflow-x: auto;
-  padding-bottom: 0px;
 }
 
 .categoryTabs {
-  display: inline-flex;
+  display: flex;
   justify-content: flex-start;
-  margin: 0;
   width: 100%;
 }
 
-.categoryTabs button {
-  color: #505a5f;
-  font-size: large;
-  padding: 10px;
+.tabButton {
+  position: relative;
   margin: 5px;
+  padding: 10px;
+  font-size: large;
+  color: #505a5f;
   background: none;
   border: none;
   cursor: pointer;
-  position: relative;
+  transition: color 0.3s ease;
 }
 
-.categoryTabs .active {
+.tabButton.active {
   color: #007bff;
 }
 
-.categoryTabs button::after {
+.tabButton::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -125,17 +124,22 @@ h1 {
   height: 4px;
   background-color: #007bff;
   border-radius: 10px;
-  transition: all 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
 }
 
-.categoryTabs button.active::after {
+.tabButton.active::after {
   width: 100%;
 }
 
 .addCategoryButton {
-  padding: 10px;
   margin-left: 10px;
+  padding: 10px;
+  font-weight: bold;
+  color: #505a5f;
+  background: none;
+  border: none;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 @media screen and (max-width: 768px) {
