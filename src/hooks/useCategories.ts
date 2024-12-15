@@ -2,15 +2,13 @@ import { useState, useEffect } from "react";
 
 const STORAGE_KEY = "category";
 
-const useCategories = () => {
-  const [categories, setCategories] = useState<string[]>(["Work", "Others"]);
+const defaultCategories = ["All", "Work", "Others"];
 
-  useEffect(() => {
+const useCategories = () => {
+  const [categories, setCategories] = useState<string[]>(() => {
     const storedCategories = localStorage.getItem(STORAGE_KEY);
-    if (storedCategories) {
-      setCategories(JSON.parse(storedCategories));
-    }
-  }, []);
+    return storedCategories ? JSON.parse(storedCategories) : defaultCategories;
+  });
 
   useEffect(() => {
     if (categories.length) {
