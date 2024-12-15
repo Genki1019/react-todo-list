@@ -6,6 +6,7 @@ import TodoList from "./TodoList";
 import SortControls from "./SortControls";
 import useTodos from "./hooks/useTodos";
 import useSortTodos from "./hooks/useSortTodos";
+import useCategories from "./hooks/useCategories";
 import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
 
@@ -21,8 +22,8 @@ function App() {
   const [deadline, setDeadline] = useState<Date | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.CREATED_ASC);
   const sortedTodos = useSortTodos(todos, sortOrder);
-  const [categories, setCategories] = useState<string[]>(["Study", "Work"]);
-  const [selectedCategory, setSelectedCategory] = useState("Work");
+  const [categories, setCategories] = useCategories();
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
