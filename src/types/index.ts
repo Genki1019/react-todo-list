@@ -4,3 +4,10 @@ export type Todo = {
   isCompleted: boolean;
   deadline: string;
 };
+
+export enum SortOrder {
+  CREATED_ASC = "createdAsc",
+  CREATED_DESC = "createdDesc",
+  DEADLINE_ASC = "deadlineAsc",
+  DEADLINE_DESC = "deadlineDesc",
+}

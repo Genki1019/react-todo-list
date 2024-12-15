@@ -3,8 +3,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import RegisterForm from "./RegisterForm";
 import TodoList from "./TodoList";
+import SortControls from "./SortControls";
 import useTodos from "./hooks/useTodos";
-import { Todo } from "./types";
+import useSortTodos from "./hooks/useSortTodos";
+import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
 
 const formatDate = (date: Date): string => {
@@ -17,9 +19,8 @@ function App() {
   const [title, setTitle] = useState("");
   const [todos, setTodos] = useTodos();
   const [deadline, setDeadline] = useState<Date | null>(null);
-  const [sortOrder, setSortOrder] = useState<
-    "createdAsc" | "createdDesc" | "deadlineAsc" | "deadlineDesc"
-  >("createdAsc");
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.CREATED_ASC);
+  const sortedTodos = useSortTodos(todos, sortOrder);
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -87,31 +88,6 @@ function App() {
   const hasCompletedTodos =
     todos.filter((todo) => todo.isCompleted).length >= 2;
 
-  const getSortedTodos = () => {
-    return [...todos].sort((a, b) => {
-      if (a.isCompleted !== b.isCompleted) {
-        return a.isCompleted ? 1 : -1;
-      }
-
-      switch (sortOrder) {
-        case "createdAsc":
-          return 0;
-        case "createdDesc":
-          return todos.indexOf(b) - todos.indexOf(a);
-        case "deadlineAsc":
-          return (
-            new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
-          );
-        case "deadlineDesc":
-          return (
-            new Date(b.deadline).getTime() - new Date(a.deadline).getTime()
-          );
-        default:
-          return 0;
-      }
-    });
-  };
-
   return (
     <>
       <div className="container">
@@ -123,22 +99,12 @@ function App() {
           handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
-        <div className="sortControls">
-          <label htmlFor="sort-order">ソート順：</label>
-          <select
-            id="sort-order"
-            className="SortPullDownMenu"
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
-          >
-            <option value="createdAsc">登録の新しい順</option>
-            <option value="createdDesc">登録の古い順</option>
-            <option value="deadlineAsc">期限の近い順</option>
-            <option value="deadlineDesc">期限の遠い順</option>
-          </select>
-        </div>
+        <SortControls
+          sortOrder={sortOrder}
+          handleSortOrderChange={setSortOrder}
+        />
         <TodoList
-          todos={getSortedTodos()}
+          todos={sortedTodos}
           toggleCompletion={toggleCompletion}
           handleTitleEdit={handleTitleEdit}
           handleDeadlineEdit={handleDeadlineEdit}
