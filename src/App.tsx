@@ -6,14 +6,13 @@ import TodoList from "./TodoList";
 import SortControls from "./SortControls";
 import useTodos from "./hooks/useTodos";
 import useSortTodos from "./hooks/useSortTodos";
+import useCategories from "./hooks/useCategories";
 import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
-
-const formatDate = (date: Date): string => {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-    .toISOString()
-    .split("T")[0];
-};
+import CategoryTabs from "./CategoryTabs";
+import { DEFAULT_CATEGORIES } from "./types/constants";
+import BulkDeleteButton from "./BulkDeleteButton";
+import { formatDate } from "./utils/formatDate";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -21,6 +20,14 @@ function App() {
   const [deadline, setDeadline] = useState<Date | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.CREATED_ASC);
   const sortedTodos = useSortTodos(todos, sortOrder);
+  const [categories, setCategories] = useCategories();
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
+
+  const filteredTodos = sortedTodos.filter(
+    (todo) =>
+      activeCategory === DEFAULT_CATEGORIES[0] ||
+      todo.category === activeCategory
+  );
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -41,6 +48,7 @@ function App() {
       title: title.trim(),
       isCompleted: false,
       deadline: formattedDeadline,
+      category: activeCategory,
     };
     setTodos([newTodo, ...todos]);
     setTitle("");
@@ -86,12 +94,41 @@ function App() {
   };
 
   const hasCompletedTodos =
-    todos.filter((todo) => todo.isCompleted).length >= 2;
+    filteredTodos.filter((todo) => todo.isCompleted).length >= 2;
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+  };
+
+  const handleCategoryAdd = () => {
+    const newCategory = prompt("新しいカテゴリ名を入力してください");
+    if (newCategory && !categories.includes(newCategory)) {
+      setCategories([...categories, newCategory]);
+      setActiveCategory(newCategory);
+    }
+  };
+
+  const handleCategoryDelete = (categoryToDelete: string) => {
+    setCategories((prevCategories) =>
+      prevCategories.filter((category) => category !== categoryToDelete)
+    );
+    if (activeCategory === categoryToDelete && categories.length > 1) {
+      setActiveCategory(categories[0]);
+    }
+  };
+
+  const handleCategoryReorder = (sourceIndex: number, targetIndex: number) => {
+    const updatedCategories = [...categories];
+    const [movedCategory] = updatedCategories.splice(sourceIndex, 1);
+    updatedCategories.splice(targetIndex, 0, movedCategory);
+    setCategories(updatedCategories);
+  };
 
   return (
     <>
       <div className="container">
         <h1>Todoリスト</h1>
+
         <RegisterForm
           title={title}
           deadline={deadline}
@@ -99,22 +136,33 @@ function App() {
           handleDeadlineChange={handleDeadlineChange}
           handleSubmit={handleSubmit}
         />
+
+        <CategoryTabs
+          categories={categories}
+          activeCategory={activeCategory}
+          handleCategoryChange={handleCategoryChange}
+          handleCategoryAdd={handleCategoryAdd}
+          handleCategoryDelete={handleCategoryDelete}
+          handleCategoryReorder={handleCategoryReorder}
+        />
+
         <SortControls
           sortOrder={sortOrder}
           handleSortOrderChange={setSortOrder}
         />
+
         <TodoList
-          todos={sortedTodos}
+          todos={filteredTodos}
           toggleCompletion={toggleCompletion}
           handleTitleEdit={handleTitleEdit}
           handleDeadlineEdit={handleDeadlineEdit}
           handleDelete={handleDelete}
         />
-        {hasCompletedTodos && (
-          <button className="bulkDeleteButton" onClick={handleBulkDelete}>
-            完了済みのタスクを一括削除
-          </button>
-        )}
+
+        <BulkDeleteButton
+          hasCompletedTodos={hasCompletedTodos}
+          handleBulkDelete={handleBulkDelete}
+        />
       </div>
     </>
   );

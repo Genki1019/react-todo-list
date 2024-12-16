@@ -1,5 +1,11 @@
 import DatePicker from "react-datepicker";
 import { Todo } from "./types";
+import {
+  DANGER_BACKGROUND_COLOR,
+  DANGER_FONT_COLOR,
+  WARNING_BACKGROUND_COLOR,
+  WARNING_FONT_COLOR,
+} from "./types/constants";
 
 type TodoCardProps = {
   todo: Todo;
@@ -8,11 +14,6 @@ type TodoCardProps = {
   handleDeadlineEdit: (id: string, newDeadline: string) => void;
   handleDelete: (id: string) => void;
 };
-
-const DANGER_FONT_COLOR = "#f93840";
-const DANGER_BACKGROUND_COLOR = "#feeff1";
-const WARNING_FONT_COLOR = "#c98d00";
-const WARNING_BACKGROUND_COLOR = "#fcfae1";
 
 function TodoCard({
   todo,

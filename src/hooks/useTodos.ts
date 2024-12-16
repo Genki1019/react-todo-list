@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { Todo } from "../types";
-
-const STORAGE_KEY = "todos";
+import { TODO_STORAGE_KEY } from "../types/constants";
 
 const useTodos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    const storedTodos = localStorage.getItem(STORAGE_KEY);
+    const storedTodos = localStorage.getItem(TODO_STORAGE_KEY);
     if (storedTodos) {
       setTodos(JSON.parse(storedTodos));
     }
@@ -15,7 +14,7 @@ const useTodos = () => {
 
   useEffect(() => {
     if (todos.length) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+      localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(todos));
     }
   }, [todos]);
 
