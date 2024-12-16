@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Todo } from "../types";
-import { TODO_STORAGE_KEY } from "../types/constants";
+import { TODO_STORAGE_KEY } from "../constants/constants";
 
 const useTodos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);

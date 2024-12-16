@@ -1,17 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
-import RegisterForm from "./RegisterForm";
-import TodoList from "./TodoList";
-import SortControls from "./SortControls";
+import RegisterForm from "./components/RegisterForm";
+import TodoList from "./components/TodoList";
+import SortControls from "./components/SortControls";
 import useTodos from "./hooks/useTodos";
 import useSortTodos from "./hooks/useSortTodos";
 import useCategories from "./hooks/useCategories";
 import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
-import CategoryTabs from "./CategoryTabs";
-import { DEFAULT_CATEGORIES } from "./types/constants";
-import BulkDeleteButton from "./BulkDeleteButton";
+import CategoryTabs from "./components/CategoryTabs";
+import { DEFAULT_CATEGORIES } from "./constants/constants";
+import BulkDeleteButton from "./components/BulkDeleteButton";
 import { formatDate } from "./utils/formatDate";
 
 function App() {

@@ -1,5 +1,5 @@
 import { DragEvent, MouseEvent } from "react";
-import { DEFAULT_CATEGORIES } from "./types/constants";
+import { DEFAULT_CATEGORIES } from "../constants/constants";
 
 type CategoryTabsProps = {
   categories: string[];

@@ -1,5 +1,5 @@
 import TodoCard from "./TodoCard";
-import { Todo } from "./types";
+import { Todo } from "../types";
 
 type TodoListProps = {
   todos: Todo[];

@@ -1,11 +1,11 @@
 import DatePicker from "react-datepicker";
-import { Todo } from "./types";
+import { Todo } from "../types";
 import {
   DANGER_BACKGROUND_COLOR,
   DANGER_FONT_COLOR,
   WARNING_BACKGROUND_COLOR,
   WARNING_FONT_COLOR,
-} from "./types/constants";
+} from "../constants/constants";
 
 type TodoCardProps = {
   todo: Todo;

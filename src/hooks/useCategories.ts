@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { CATEGORY_STORAGE_KEY, DEFAULT_CATEGORIES } from "../types/constants";
+import {
+  CATEGORY_STORAGE_KEY,
+  DEFAULT_CATEGORIES,
+} from "../constants/constants";
 
 const useCategories = () => {
   const [categories, setCategories] = useState<string[]>(() => {
