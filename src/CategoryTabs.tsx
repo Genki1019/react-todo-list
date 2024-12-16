@@ -1,4 +1,5 @@
 import { DragEvent, MouseEvent } from "react";
+import { DEFAULT_CATEGORIES } from "./types/constants";
 
 type CategoryTabsProps = {
   categories: string[];
@@ -19,6 +20,10 @@ const CategoryTabs = ({
 }: CategoryTabsProps) => {
   const handleContextMenu = (e: MouseEvent, category: string) => {
     e.preventDefault();
+    if (category === DEFAULT_CATEGORIES[0]) {
+      alert("カテゴリAllは削除できません");
+      return;
+    }
     if (window.confirm(`カテゴリ${category}を削除しますか？`)) {
       handleCategoryDelete(category);
     }

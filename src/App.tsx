@@ -10,6 +10,7 @@ import useCategories from "./hooks/useCategories";
 import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
 import CategoryTabs from "./CategoryTabs";
+import { DEFAULT_CATEGORIES } from "./types/constants";
 
 const formatDate = (date: Date): string => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -25,6 +26,12 @@ function App() {
   const sortedTodos = useSortTodos(todos, sortOrder);
   const [categories, setCategories] = useCategories();
   const [activeCategory, setActiveCategory] = useState(categories[0]);
+
+  const filteredTodos = sortedTodos.filter(
+    (todo) =>
+      activeCategory === DEFAULT_CATEGORIES[0] ||
+      todo.category === activeCategory
+  );
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -91,7 +98,7 @@ function App() {
   };
 
   const hasCompletedTodos =
-    todos.filter((todo) => todo.isCompleted).length >= 2;
+    filteredTodos.filter((todo) => todo.isCompleted).length >= 2;
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -120,10 +127,6 @@ function App() {
     updatedCategories.splice(targetIndex, 0, movedCategory);
     setCategories(updatedCategories);
   };
-
-  const filteredTodos = sortedTodos.filter(
-    (todo) => activeCategory === "All" || todo.category === activeCategory
-  );
 
   return (
     <>

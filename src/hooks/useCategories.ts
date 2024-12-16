@@ -1,18 +1,15 @@
 import { useState, useEffect } from "react";
-
-const STORAGE_KEY = "category";
-
-const DEFAULT_CATEGORIES = ["All", "Work", "Others"];
+import { CATEGORY_STORAGE_KEY, DEFAULT_CATEGORIES } from "../types/constants";
 
 const useCategories = () => {
   const [categories, setCategories] = useState<string[]>(() => {
-    const storedCategories = localStorage.getItem(STORAGE_KEY);
+    const storedCategories = localStorage.getItem(CATEGORY_STORAGE_KEY);
     return storedCategories ? JSON.parse(storedCategories) : DEFAULT_CATEGORIES;
   });
 
   useEffect(() => {
     if (categories.length) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+      localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(categories));
     }
   }, [categories]);
 
