@@ -121,6 +121,10 @@ function App() {
     setCategories(updatedCategories);
   };
 
+  const filteredTodos = sortedTodos.filter(
+    (todo) => activeCategory === "All" || todo.category === activeCategory
+  );
+
   return (
     <>
       <div className="container">
@@ -149,7 +153,7 @@ function App() {
         />
 
         <TodoList
-          todos={sortedTodos}
+          todos={filteredTodos}
           toggleCompletion={toggleCompletion}
           handleTitleEdit={handleTitleEdit}
           handleDeadlineEdit={handleDeadlineEdit}
