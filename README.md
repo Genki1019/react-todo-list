@@ -1,50 +1,54 @@
-# React + TypeScript + Vite
+# Todo リスト
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+このプロジェクトは、React と TypeScript を使用して作成したシンプルな Todo アプリです。タスクの管理、完了状態の切り替え、カテゴリ分け、期限の設定など、基本的な Todo アプリの機能を実装しています。
 
-Currently, two official plugins are available:
+## インストール方法
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+以下の手順に従って、このアプリをローカル環境で起動できます。
 
-## Expanding the ESLint configuration
+### 1. リポジトリのクローン
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+まず、このリポジトリをローカル環境にクローンします。
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone git@github.com:Genki1019/react-todo-list.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. 依存関係のインストール
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+次に、プロジェクトのディレクトリに移動して、依存関係をインストールします。
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd react-ts-todo-app
+npm install
+  または
+yarn install
 ```
+
+### 3. アプリの起動
+
+依存関係がインストールされたら、以下のコマンドでアプリをローカル環境で起動できます。
+
+```bash
+npm run dev
+  または
+yarn dev
+```
+
+## 特徴
+
+- **タスクの追加・削除**: 新しいタスクを追加し、完了したタスクを削除することができます。
+- **タスクの編集**: タスクのタイトルや期限を編集できます。
+- **タスクの完了状態切り替え**: タスクの完了状態をチェックボックスで切り替え可能です。
+- **カテゴリ分け**: タスクを複数のカテゴリに分けて整理できます。
+- **期限の設定**: タスクごとに締め切り日を設定し、期限を過ぎたタスクを確認できます。
+- **タスクのソート**: 登録順や期限でタスクをソートできます。
+- **一括削除**: 完了したタスクを一括削除する機能を提供します。
+
+## 使用技術
+
+- **Node.js(ver22.2.0)**: JavaScript 環境として使用。
+- **React(ver18.3.1)**: ユーザーインターフェースの作成に使用。
+- **TypeScript(ver5.6.2)**: 型安全なコードを書くために使用。
+- **Vite(ver6.0.1)**: 高速なビルドツールとして使用。
+- **CSS**: アプリケーションのスタイリングに使用。
