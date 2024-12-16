@@ -12,12 +12,7 @@ import { v4 as uuid } from "uuid";
 import CategoryTabs from "./CategoryTabs";
 import { DEFAULT_CATEGORIES } from "./types/constants";
 import BulkDeleteButton from "./BulkDeleteButton";
-
-const formatDate = (date: Date): string => {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-    .toISOString()
-    .split("T")[0];
-};
+import { formatDate } from "./utils/formatDate";
 
 function App() {
   const [title, setTitle] = useState("");
