@@ -11,6 +11,7 @@ import { SortOrder, Todo } from "./types";
 import { v4 as uuid } from "uuid";
 import CategoryTabs from "./CategoryTabs";
 import { DEFAULT_CATEGORIES } from "./types/constants";
+import BulkDeleteButton from "./BulkDeleteButton";
 
 const formatDate = (date: Date): string => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
@@ -163,11 +164,10 @@ function App() {
           handleDelete={handleDelete}
         />
 
-        {hasCompletedTodos && (
-          <button className="bulkDeleteButton" onClick={handleBulkDelete}>
-            完了済みのタスクを一括削除
-          </button>
-        )}
+        <BulkDeleteButton
+          hasCompletedTodos={hasCompletedTodos}
+          handleBulkDelete={handleBulkDelete}
+        />
       </div>
     </>
   );
