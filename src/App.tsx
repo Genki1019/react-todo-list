@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import "./App.css";
+import "./styles/App.css";
 import RegisterForm from "./components/RegisterForm";
 import TodoList from "./components/TodoList";
 import SortControls from "./components/SortControls";
