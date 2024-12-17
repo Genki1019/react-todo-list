@@ -1,4 +1,4 @@
-import { SortOrder } from "./types";
+import { SortOrder } from "../types/index";
 
 type SortControlsProps = {
   sortOrder: SortOrder;
